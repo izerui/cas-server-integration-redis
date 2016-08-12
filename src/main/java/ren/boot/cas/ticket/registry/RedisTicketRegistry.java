@@ -42,20 +42,23 @@ public final class RedisTicketRegistry extends AbstractCrypticTicketRegistry imp
 
     /** redis client. */
     @NotNull
-    private final TicketRedisTemplate client;
+    private TicketRedisTemplate client;
 
     /**
      * TGT cache entry timeout in seconds.
      */
     @Min(0)
-    private final int tgtTimeout;
+    private int tgtTimeout;
 
     /**
      * ST cache entry timeout in seconds.
      */
     @Min(0)
-    private final int stTimeout;
+    private int stTimeout;
 
+
+    public RedisTicketRegistry() {
+    }
 
     /**
      * Creates a new instance using the given redis client instance, which is presumably configured via
