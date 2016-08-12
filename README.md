@@ -29,7 +29,7 @@
 ```
 替换为
 ```
-<bean id="ticketRegistry" class="org.jasig.cas.ticket.registry.RedisTicketRegistry">
+<bean id="ticketRegistry" class="ren.boot.cas.ticket.registry.RedisTicketRegistry">
     <constructor-arg index="0" ref="redisTemplate" />
 
     <!-- TGT timeout in seconds -->
