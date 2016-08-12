@@ -56,6 +56,17 @@ public final class RedisTicketRegistry extends AbstractCrypticTicketRegistry imp
     @Min(0)
     private int stTimeout;
 
+    public void setClient(TicketRedisTemplate client) {
+        this.client = client;
+    }
+
+    public void setTgtTimeout(int tgtTimeout) {
+        this.tgtTimeout = tgtTimeout;
+    }
+
+    public void setStTimeout(int stTimeout) {
+        this.stTimeout = stTimeout;
+    }
 
     public RedisTicketRegistry() {
     }
