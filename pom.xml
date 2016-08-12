@@ -6,7 +6,7 @@
 
     <groupId>ren.boot</groupId>
     <artifactId>cas-server-integration-redis</artifactId>
-    <version>1.0.1-RELEASE</version>
+    <version>1.1.0-RELEASE</version>
 
 
     <dependencies>
