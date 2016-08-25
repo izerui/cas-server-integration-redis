@@ -40,7 +40,9 @@ public final class RedisTicketRegistry extends AbstractCrypticTicketRegistry imp
 
     private final static String TICKET_PREFIX = "CAS:TICKET:";
 
-    /** redis client. */
+    /**
+     * redis client.
+     */
     @NotNull
     private TicketRedisTemplate client;
 
@@ -89,7 +91,8 @@ public final class RedisTicketRegistry extends AbstractCrypticTicketRegistry imp
     protected void updateTicket(final Ticket ticket) {
         logger.debug("Updating ticket {}", ticket);
         try {
-            this.client.boundValueOps(TICKET_PREFIX+ticket.getId()).set(ticket,getTimeout(ticket), TimeUnit.SECONDS);
+            String redisKey = this.getTicketRedisKey(ticket.getId());
+            this.client.boundValueOps(redisKey).set(ticket, getTimeout(ticket), TimeUnit.SECONDS);
         } catch (final Exception e) {
             logger.error("Failed updating {}", ticket, e);
         }
@@ -98,16 +101,17 @@ public final class RedisTicketRegistry extends AbstractCrypticTicketRegistry imp
     public void addTicket(final Ticket ticket) {
         logger.debug("Adding ticket {}", ticket);
         try {
-            this.client.boundValueOps(TICKET_PREFIX+ticket.getId()).set(ticket,getTimeout(ticket),TimeUnit.SECONDS);
-        }catch (final Exception e) {
-            logger.error("Failed adding {}", ticket, e);
+            String redisKey = this.getTicketRedisKey(ticket.getId());
+            this.client.boundValueOps(redisKey).set(ticket, getTimeout(ticket), TimeUnit.SECONDS);
+        } catch (final Exception e) {
+            logger.error("Failed Adding {}", ticket, e);
         }
     }
 
     public boolean deleteTicket(final String ticketId) {
         logger.debug("Deleting ticket {}", ticketId);
         try {
-            this.client.delete(TICKET_PREFIX+ticketId);
+            this.client.delete(this.getTicketRedisKey(ticketId));
             return true;
         } catch (final Exception e) {
             logger.error("Failed deleting {}", ticketId, e);
@@ -117,7 +121,7 @@ public final class RedisTicketRegistry extends AbstractCrypticTicketRegistry imp
 
     public Ticket getTicket(final String ticketId) {
         try {
-            final Ticket t = (Ticket) this.client.boundValueOps(TICKET_PREFIX+ticketId).get();
+            final Ticket t = (Ticket) this.client.boundValueOps(this.getTicketRedisKey(ticketId)).get();
             if (t != null) {
                 return getProxiedTicketInstance(t);
             }
@@ -135,12 +139,12 @@ public final class RedisTicketRegistry extends AbstractCrypticTicketRegistry imp
      */
     public Collection<Ticket> getTickets() {
         Set<Ticket> tickets = new HashSet<Ticket>();
-        Set<String> keys = this.client.keys(TICKET_PREFIX + "*");
-        for (String key:keys){
-            Ticket ticket = this.client.boundValueOps(TICKET_PREFIX+key).get();
-            if(ticket==null){
-                this.client.delete(TICKET_PREFIX+key);
-            }else{
+        Set<String> keys = this.client.keys(this.getPatternTicketRedisKey());
+        for (String key : keys) {
+            Ticket ticket = this.client.boundValueOps(key).get();
+            if (ticket == null) {
+                this.client.delete(key);
+            } else {
                 tickets.add(ticket);
             }
         }
@@ -148,15 +152,8 @@ public final class RedisTicketRegistry extends AbstractCrypticTicketRegistry imp
     }
 
     public void destroy() throws Exception {
-        //do nothing
+        client.getConnectionFactory().getConnection().close();
     }
-
-    /**
-     * @param sync set to true, if updates to registry are to be synchronized
-     * @deprecated As of version 3.5, this operation has no effect since async writes can cause registry consistency issues.
-     */
-    @Deprecated
-    public void setSynchronizeUpdatesToRegistry(final boolean sync) {}
 
     @Override
     protected boolean needsCallback() {
@@ -170,5 +167,15 @@ public final class RedisTicketRegistry extends AbstractCrypticTicketRegistry imp
             return this.stTimeout;
         }
         throw new IllegalArgumentException("Invalid ticket type");
+    }
+
+    //Add a prefix as the key of redis
+    private String getTicketRedisKey(String ticketId) {
+        return TICKET_PREFIX + ticketId;
+    }
+
+    // pattern all ticket redisKey
+    private String getPatternTicketRedisKey() {
+        return TICKET_PREFIX + "*";
     }
 }
