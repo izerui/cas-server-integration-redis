@@ -17,7 +17,7 @@
 
 ### 实现步骤：
 
-# 1. 进入 [![](https://jitpack.io/v/izerui/cas-server-integration-redis.svg)](https://jitpack.io/#izerui/cas-server-integration-redis) , 增加依赖 版本: 1.1.1-RELEASE
+# 1. 进入 [![](https://jitpack.io/v/izerui/cas-server-integration-redis.svg)](https://jitpack.io/#izerui/cas-server-integration-redis)
 
 # 2. 替换默认的ticket存取策略
 
