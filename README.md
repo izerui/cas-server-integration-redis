@@ -55,7 +55,7 @@
   	}
   ```
 
-点击进入: [![](https://jitpack.io/v/izerui/cas-server-integration-redis.svg)](https://jitpack.io/#izerui/cas-server-integration-redis)
+[![](https://jitpack.io/v/izerui/cas-server-integration-redis.svg)](https://jitpack.io/#izerui/cas-server-integration-redis)
 
 # 2. 替换默认的ticket存取策略
 
