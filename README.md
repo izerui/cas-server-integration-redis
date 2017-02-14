@@ -20,6 +20,7 @@
 # 1. 添加相关依赖
 
   #### maven:
+  
   添加仓库:
   ```
     <repositories>
@@ -39,6 +40,7 @@
   ```
   ---
   #### gradle:
+  
   添加仓库:
   ```
     allprojects {
