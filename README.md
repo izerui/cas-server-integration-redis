@@ -19,6 +19,42 @@
 
 # 1. 添加相关依赖
 
+  maven:
+  添加仓库:
+  ```
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+  ```
+  添加依赖:
+  ```
+    <dependency>
+  	    <groupId>com.github.izerui</groupId>
+  	    <artifactId>cas-server-integration-redis</artifactId>
+  	    <version>1.1.1-RELEASE</version>
+  	</dependency>
+  ```
+  ---
+  gradle:
+  添加仓库:
+  ```
+    allprojects {
+  		repositories {
+  			...
+  			maven { url 'https://jitpack.io' }
+  		}
+  	}
+  ```
+  添加依赖
+  ```
+    dependencies {
+  	        compile 'com.github.izerui:cas-server-integration-redis:1.1.1-RELEASE'
+  	}
+  ```
+
 点击进入: [![](https://jitpack.io/v/izerui/cas-server-integration-redis.svg)](https://jitpack.io/#izerui/cas-server-integration-redis)
 
 # 2. 替换默认的ticket存取策略
