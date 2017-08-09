@@ -1,4 +1,5 @@
-# 实现cas ticket基于redis的集群,该项目已经提交到官方cas5.1后续版本模块中。
+# 实现cas ticket基于redis的集群
+>该项目已经提交到官方cas5.1后续版本模块中。详情见: https://github.com/apereo/cas/pull/2233
 
 ### 目的
 	克服cas单点故障，将cas认证请求分发到多台cas服务器上，降低负载。
